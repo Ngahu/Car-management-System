@@ -49,3 +49,45 @@ class VehicleCreateSerializer(serializers.ModelSerializer):
 
 
 
+
+
+
+class ReadUserSerializer(serializers.ModelSerializer):
+    """
+    Description: Returns a read only user details
+    """
+    class Meta:
+        model = User
+        fields =(
+            'id',
+            'first_name',
+            'last_name',
+            'email'
+        )
+
+
+
+
+
+
+
+class VehicleDetailSerializer(serializers.ModelSerializer):
+    """
+    Returns the details of a single vehicle
+    """
+    creator = ReadUserSerializer()
+    class Meta:
+        model = Vehicle
+        fields = (
+            'creator',
+            'car_make',
+            'registration_number',
+            'year_of_manufacturing',
+            'is_available',
+            'car_type',
+            'car_color',
+            'date_created',
+            'date_updated'
+        )
+
+
