@@ -15,7 +15,8 @@ from .serializers import (
     VehicleCreateSerializer,
     VehicleDetailSerializer,
     VehiclesListSerializer,
-    VehicleUpdateSerializer
+    VehicleUpdateSerializer,
+    UserRegisterSerializer
 )
 
 from rest_framework.authtoken.models import Token
@@ -38,7 +39,7 @@ class RootAPIView(APIView):
         return Response({
             "login":reverse("show_room:user_login", request=request, format=format),
 
-            
+
             "create-car":reverse("show_room:create_car", request=request, format=format),
 
             "available-blue-cars":reverse("show_room:available_blue_cars", request=request, format=format),
@@ -447,4 +448,91 @@ class  UserLoginAPIView(APIView):
                     "error":"Sorry This  user is not active please contact us!"
                 }
                 return Response(error,status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
+
+
+
+
+
+class UserRegisterAPIView(APIView):
+    """
+    Description:User register endpoint\n
+    Type of request:POST\n
+    Request data type:JSON\n
+    POST request body: \n
+        {
+            "username":"joe",
+            "email":"joe@test.com",
+            "first_name":"test",
+            "last_name":"joe",
+            "password":"mysecretstrongpassword",
+        }\n
+    Response success status:HTTP_201_created \n
+    Response data type:JSON\n
+    Sample success Response: \n
+                                {
+                                "token": "ff35f2a0600cbfbe1fa7f4ece5db5d1a4a89c5d2",
+                                "user": 38,
+                                "email": "joe@test.com",
+                                "username": "joe",
+                                }\n    
+    Response failure: \n{
+    error: Sorry username is already registered: \t HTTP_403_FORBIDDEN
+    }\n
+    """
+    
+    def post(self,request,*args,**kwargs):
+        username = request.data["username"]
+        email = request.data["email"]
+        password = request.data["password"]
+        first_name = request.data["first_name"]
+        last_name =  request.data["last_name"]
+
+
+
+        data = {
+            "username":username,
+            "email":email,
+            "first_name":first_name,
+            "last_name":last_name,
+            "password":password,
+            
+        }
+
+        # make sure that the user is unique
+        if User.objects.filter(username__iexact=data["username"]).exists():
+            error = {
+                "error":"Sorry,%s is already registered."%data["username"]
+            }
+            return Response(error,status=status.HTTP_409_CONFLICT)
+
+
+        
+        # create the user first
+        usercreate_serializer = UserRegisterSerializer(data=data)
+
+        if usercreate_serializer.is_valid():
+            user = usercreate_serializer.save()
+            user.set_password(request.data["password"])
+            user.save()
+
+            token = Token.objects.get(user_id=user.id)
+
+            success_user_response = {
+                "user":user.id,
+                "username":user.username,
+                "email":user.email,
+                "token":token.key
+            }
+            return Response(success_user_response,status=status.HTTP_201_CREATED)
+                
+
+        return Response(usercreate_serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+
 

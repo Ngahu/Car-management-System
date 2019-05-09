@@ -10,7 +10,8 @@ from .views import (
     DeleteAllUnavailableVehicles,
     ListAllAvailableAPIView,
     RootAPIView,
-    UserLoginAPIView
+    UserLoginAPIView,
+    UserRegisterAPIView
 )
 
 
@@ -18,6 +19,7 @@ from .views import (
 urlpatterns = [
     #Auth 
     url('login/$', UserLoginAPIView.as_view(), name='user_login'),
+    url('register/$', UserRegisterAPIView.as_view(), name='user_register'),
 
 
     url('api/v1/$', RootAPIView.as_view(), name='root_api_view'),

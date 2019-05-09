@@ -10,6 +10,37 @@ from car_management_app.core.choices import (
 )
 
 
+
+class UserRegisterSerializer(serializers.ModelSerializer):
+    """
+    Description:The serializer to validate the user details during registration\n
+    """
+
+    class Meta:
+        model = User
+        fields = (
+            'username',
+            'email',
+            'password',
+            'first_name',
+            'last_name'
+        )
+        write_only_fields = ('password',)
+        read_only_fields = ('is_staff', 'is_admin', 'is_active',)
+
+        def create(self,validated_data):
+            user = User(
+                username=validated_data['username'],
+                email=validated_data['email'],
+                first_name = validated_data['first_name'],
+                last_name=validated_data['last_name']
+            )
+            user.set_password(validated_data['password'])
+            user.save()
+            return user
+
+
+
 class VehicleCreateSerializer(serializers.ModelSerializer):
     '''
     Description:This is the serializer to be used to create a new car in the database.\n
