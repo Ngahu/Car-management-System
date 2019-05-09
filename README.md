@@ -37,9 +37,12 @@ pip install -r car_management_app/requirements.txt
 
 
 ## Running the application
-After the configuration, you will run the app 
+After the configuration, first run load_people script to download the json then  run the app 
 ```
 cd car_management_app
+
+chmod +x load_people.sh
+./load_people.sh
 
 python manage.py runserver
 ```

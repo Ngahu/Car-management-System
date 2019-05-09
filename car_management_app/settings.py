@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     #internal apps
     'show_room',
+    'people_app',
 
 
     #external apps
