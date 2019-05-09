@@ -10,10 +10,14 @@ from rest_framework import status
 
 
 from .serializers import (
-    VehicleCreateSerializer
+    VehicleCreateSerializer,
+    VehicleDetailSerializer,
+    VehiclesListSerializer
 )
 
 
+
+from .models import Vehicle
 
 
 class VehicleCreateAPIView(APIView):
@@ -78,3 +82,56 @@ class VehicleCreateAPIView(APIView):
             return Response(car_create_serializer.data,status=status.HTTP_201_CREATED)
 
         return Response(car_create_serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
+
+class VehicleDetailAPIView(APIView):
+    """
+    Description:detail
+    """
+    permission_classes = (IsAuthenticated,)
+    def get(self,request,id,format=None):
+        current_user = request.user
+
+        #get the car
+        try:
+            the_car = Vehicle.objects.get(id=id)
+
+            serializer_class = VehicleDetailSerializer(the_car)
+            return Response(serializer_class.data,status=status.HTTP_200_OK)
+        
+        except(Vehicle.DoesNotExist,OverflowError) as err:
+            error = {
+                "error":"Sorry,Car do not exist."
+            }
+            return Response(error,status=status.HTTP_404_NOT_FOUND)
+
+
+
+
+
+class ListAvailableBlueCarsAPIView(APIView):
+    '''
+    list all available blue cars.\n
+    '''
+    permission_classes = (IsAuthenticated,)
+    def get(self,request,format=None):
+        current_user = request.user
+
+
+        try:
+            cars_list = Vehicle.objects.available().filter(car_color='blue')
+        
+        except Vehicle.DoesNotExist:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        
+        available_blue_cars_serializer = VehiclesListSerializer(
+            cars_list,
+            many=True,
+            context={'request': request}
+        )
+        return Response(available_blue_cars_serializer.data,status=status.HTTP_200_OK)

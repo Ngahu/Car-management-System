@@ -34,6 +34,8 @@ class VehicleManger(models.Manager):
     
     def unavailable(self):
         return self.get_queryset().filter(is_available=False)
+ 
+
     
 
 
@@ -66,7 +68,7 @@ class Vehicle (models.Model):
 
 
     objects = VehicleManger()
-    
+
 
 
     

@@ -91,3 +91,26 @@ class VehicleDetailSerializer(serializers.ModelSerializer):
         )
 
 
+
+
+
+
+class VehiclesListSerializer(serializers.ModelSerializer):
+    """
+    Returns a list of all cars
+    """
+    url = serializers.HyperlinkedIdentityField(
+        view_name = 'show_room:car_detail',
+        lookup_field = 'id'
+    )
+
+    class Meta:
+        model = Vehicle
+        fields = (
+            'url',
+            'car_make',
+            'is_available',
+            'car_type',
+            'car_color',
+            
+        )
