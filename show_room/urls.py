@@ -9,12 +9,17 @@ from .views import (
     ListAllAPIView,
     DeleteAllUnavailableVehicles,
     ListAllAvailableAPIView,
-    RootAPIView
+    RootAPIView,
+    UserLoginAPIView
 )
 
 
 
 urlpatterns = [
+    #Auth 
+    url('login/$', UserLoginAPIView.as_view(), name='user_login'),
+
+
     url('api/v1/$', RootAPIView.as_view(), name='root_api_view'),
     url('create-car/$', VehicleCreateAPIView.as_view(), name='create_car'),
 

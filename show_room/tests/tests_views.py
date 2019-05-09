@@ -58,5 +58,7 @@ class VehicleAPITestCase():
         url = the_car.get_api_url()
         response = self.client.get(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+    
+    
 
         
