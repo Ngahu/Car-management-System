@@ -66,6 +66,10 @@ class Vehicle (models.Model):
     date_created    = models.DateTimeField(auto_now_add=True)
     date_updated    = models.DateTimeField(auto_now=True)
 
+    #soft delete 
+    is_deleted = models.BooleanField(default=False)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+
 
     objects = VehicleManger()
 
