@@ -42,29 +42,6 @@ class VehicleCreateSerializer(serializers.ModelSerializer):
             )
             new_vehicle.save()
             return new_vehicle
-            
 
 
 
-
-
-
-
-
-
-class ShopStoreAddSupplierSerializer(serializers.ModelSerializer):
-    """
-    Description:Add a supplier to a shop.\n
-    """
-    class Meta:
-        model = ShopStore
-        fields = (
-            'suppliers',
-        )
-        def create(self,validated_data):
-            added_supplier = ShopStore(
-                suppliers = validated_data['suppliers']
-            )
-            added_supplier.save()
-
-            return added_supplier
