@@ -86,8 +86,11 @@ class VehicleDetailSerializer(serializers.ModelSerializer):
             'is_available',
             'car_type',
             'car_color',
+            'is_deleted',
+            'deleted_at',
             'date_created',
-            'date_updated'
+            'date_updated',
+            
         )
 
 
@@ -102,15 +105,42 @@ class VehiclesListSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(
         view_name = 'show_room:car_detail',
         lookup_field = 'id'
+    ) 
+    update_url = serializers.HyperlinkedIdentityField(
+        view_name = 'show_room:update_car',
+        lookup_field = 'id'
     )
 
     class Meta:
         model = Vehicle
         fields = (
             'url',
+            'update_url',
             'car_make',
             'is_available',
             'car_type',
             'car_color',
             
         )
+
+
+
+
+
+
+
+
+
+class VehicleUpdateSerializer(serializers.ModelSerializer):
+    '''
+    Description:This is the serializer to be used to update.\n
+    '''
+    car_color = serializers.ChoiceField(choices=COLOR_CHOICES)
+    
+    class Meta:
+        model = Vehicle
+        fields = (
+            'is_available',
+            'car_color'
+        )
+

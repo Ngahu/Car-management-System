@@ -30,10 +30,10 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
 
 class VehicleManger(models.Manager):
     def available(self):
-        return self.get_queryset().filter(is_available=True)
+        return self.get_queryset().filter(is_available=True).exclude(is_deleted=True)
     
     def unavailable(self):
-        return self.get_queryset().filter(is_available=False)
+        return self.get_queryset().filter(is_available=False).exclude(is_deleted=True)
  
 
     
