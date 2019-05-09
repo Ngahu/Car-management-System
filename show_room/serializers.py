@@ -16,6 +16,10 @@ class VehicleCreateSerializer(serializers.ModelSerializer):
     '''
     car_color = serializers.ChoiceField(choices=COLOR_CHOICES)
     car_type = serializers.ChoiceField(choices=CAR_TYPES_CHOICES)
+    # creator = serializers.HiddenField(
+    #     default=serializers.CurrentUserDefault()
+    # )
+
     class Meta:
         model = Vehicle
         fields = (

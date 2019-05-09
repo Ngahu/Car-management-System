@@ -28,6 +28,16 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
 
 
 
+class VehicleManger(models.Manager):
+    def available(self):
+        return self.get_queryset().filter(is_available=True)
+    
+    def unavailable(self):
+        return self.get_queryset().filter(is_available=False)
+    
+
+
+
 
 
 
@@ -53,6 +63,10 @@ class Vehicle (models.Model):
     is_available    = models.BooleanField(default=True)
     date_created    = models.DateTimeField(auto_now_add=True)
     date_updated    = models.DateTimeField(auto_now=True)
+
+
+    objects = VehicleManger()
+    
 
 
     

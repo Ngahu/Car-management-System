@@ -25,21 +25,27 @@ class VehicleCreateAPIView(APIView):
     }\n
     Request data type:JSON\n
     POST request body: \n{
-        "name":"secondsecondssecondsecondecond",
-        "store":"4",
-        "description":"The description here."
+	"car_make":"Toyota",
+	"registration_number":"KAE 777G",
+	"year_of_manufacturing":"2019-01-01",
+	"car_color":"red",
+	"car_type":"hatchback",
+	"is_available":"True"
     }\n
     Response success status:HTTP_201_created \n
     Response data type:JSON\n
     Sample Success:\n
             {
-            "name": "secondsecondssecondsecondecond",
-            "store": 17,
-            "description":"The description here."
+            "creator": 1,
+            "car_make": "Nissan maxima",
+            "registration_number": "KAE 777G",
+            "year_of_manufacturing": "2019-01-01",
+            "is_available": true,
+            "car_type": "saloon",
+            "car_color": "red"
             }\n
     Response failure:\n{
-        error: Sorry you must own a Shop to perform this.\tHTTP_401_UNAUTHORIZED\n
-        error:Sorry only the owner of the store has this permission.\tHTTP_401_UNAUTHORIZED\n
+        error: Sorry yourchoice is not a valid choice.\tHTTP_401_UNAUTHORIZED\n
     }
     """
     permission_classes = (IsAuthenticated,)
@@ -52,6 +58,8 @@ class VehicleCreateAPIView(APIView):
         is_available =  request.data['is_available']
 
         current_user = request.user.id
+
+
 
         data = {
             "creator":current_user,
